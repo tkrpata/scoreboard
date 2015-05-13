@@ -3,16 +3,40 @@ import websocket
 import thread
 import time
 import requests
+import json
 import RPi.GPIO as GPIO
 
 HOST = "hackathon.securityinnovation.com"
 KEEPALIVE = ""
 KEEPALIVE_INTERVAL = 25 
 LED = 18
+score = "" 
 
 def on_message(ws, message):
+    global score # not great
+
     print message
-    for i in range(0,3):
+    data = json.loads(message)
+
+    new_score = 0
+    # optionally could count and/or identify which users scored?
+    for d in data:
+      new_score += d['points']
+
+    # don't flip out when first loading the scoreboard
+    if score == "": 
+       print "init score for first run"
+       score = new_score
+
+    score_delta = new_score - score
+    print score_delta
+
+    score = new_score
+    react(score_delta)
+
+# do whatever action when the scoreboard updates. optionally, do different things based on how much it changes
+def react(points):
+    for i in range(points/100):
        GPIO.output(LED, True)
        time.sleep(0.1)
        GPIO.output(LED, False)
