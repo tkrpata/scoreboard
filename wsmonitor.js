@@ -13,11 +13,14 @@ client.on('connect', function(connection) {
         console.log("Connection Error: " + error.toString());
     });
     connection.on('close', function() {
-        console.log('echo-protocol Connection Closed');
+        console.log('Connection Closed');
     });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
-            console.log("Received: '" + message.utf8Data + "'");
+            json = JSON.parse(message.utf8Data);
+            for (var p of json) {
+              console.log(p.username);
+            }
         }
     });
     
