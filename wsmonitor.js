@@ -1,4 +1,4 @@
-var host = "hackathon.securityinnovation.com";
+var host = HOST;
 var current_score = null;
 // global point delta - web service will use this
 global.delta = null;
