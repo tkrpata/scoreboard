@@ -1,4 +1,7 @@
 var host = "hackathon.securityinnovation.com";
+var current_score = null;
+// global point delta - web service will use this
+global.delta = null;
 
 var WebSocketClient = require('websocket').client;
 var client = new WebSocketClient();
@@ -17,11 +20,22 @@ client.on('connect', function(connection) {
     });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
+            console.log('current score: ', current_score);
             json = JSON.parse(message.utf8Data);
+            var points = 0;
             for (var p of json) {
-              console.log(p.username);
+              points += p.points;
             }
-        }
+            console.log('new score: ', points);
+            if(global.delta === null) {
+              global.delta = 0; // init
+            } else {
+              global.delta = points - current_score; 
+              // then do things?
+            }
+            console.log('delta: ', global.delta);
+            current_score = points;
+         }
     });
     
     function keepalive() {
