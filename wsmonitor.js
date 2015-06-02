@@ -30,8 +30,7 @@ client.on('connect', function(connection) {
             if(global.delta === null) {
               global.delta = 0; // init
             } else {
-              global.delta = points - current_score; 
-              // then do things?
+              global.delta = global.delta + (points - current_score); 
             }
             console.log('delta: ', global.delta);
             current_score = points;
