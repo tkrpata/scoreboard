@@ -1,4 +1,5 @@
-var host = HOST;
+var host = process.env.HOST;
+
 var current_score = null;
 // global point delta - web service will use this
 global.delta = null;
