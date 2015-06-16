@@ -54,7 +54,7 @@ if __name__ == "__main__":
                               on_message = on_message,
                               on_error = on_error,
                               on_close = on_close,
-		                          header = [ "Cookie: JSESSIONID=" + jsessionid ]
+                              header = [ "Cookie: JSESSIONID=" + jsessionid ]
                               )
   ws.on_open = on_open
   ws.run_forever()
