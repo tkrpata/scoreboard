@@ -13,13 +13,15 @@ import sys
 
 import RPi.GPIO as GPIO
 
-LED_GREEN = 23
-LED_YELLOW = 24
-LED_RED = 25
-
 HOST = "hackathon.securityinnovation.com"
 KEEPALIVE = None 
 KEEPALIVE_INTERVAL = 25 
+
+led = {
+        'green' : 23,
+        'yellow' : 24,
+        'red' : 25
+}
 
 score = {
           'current' : 0, 
@@ -36,15 +38,14 @@ def on_message(ws, message):
   score['delta'] = score['current'] - score['last']
   print score
   if score['delta'] > 0:
-    GPIO.output(LED_GREEN,True)
+    GPIO.output(led['green'],True)
   if score['delta'] > 100:
-    GPIO.output(LED_YELLOW,True)
+    GPIO.output(led['yellow'],True)
   if score['delta'] > 500:
-    GPIO.output(LED_RED,True)
+    GPIO.output(led['red'],True)
   sleep(1)
-  GPIO.output(LED_RED,False)
-  GPIO.output(LED_YELLOW,False)
-  GPIO.output(LED_GREEN,False)
+  for k in led:
+    GPIO.output(led[k],False)
   
 
 def on_error(ws, error):
@@ -66,9 +67,9 @@ def on_open(ws):
 if __name__ == "__main__":
 
   GPIO.setmode(GPIO.BCM)
-  GPIO.setup(LED_GREEN,GPIO.OUT)
-  GPIO.setup(LED_YELLOW,GPIO.OUT)
-  GPIO.setup(LED_RED,GPIO.OUT)
+  GPIO.setup(led['green'],GPIO.OUT)
+  GPIO.setup(led['yellow'],GPIO.OUT)
+  GPIO.setup(led['red'],GPIO.OUT)
 
   # gotta get a cookie
   # fail gracefully from this please
